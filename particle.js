@@ -9,7 +9,7 @@ class Particle {
 
     show() {
         noStroke()
-        circle(this.pos.x, this.pos.y, this.r)
+        circle(this.pos.x, this.pos.y, this.r*2)
     }
 
     update() {

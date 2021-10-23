@@ -9,13 +9,12 @@ let's simulate a the oscillating motion of a spring using vectors and forces!
 
 coding plan:
 .   particle class ➜ constructor, show, update, apply_force
-		pos, vel, acc
+0		pos, vel, acc
 .	spring class ➜ constructor, update, show
-		a, b, k, rest_length
-	multiple spring and particle arrays
-	gravity
-	use curvedVertex, noFill
-	mouse sets position of tail
+0		a, b, k, rest_length
+.	multiple spring and particle arrays
+*	use curvedVertex, noFill
+*	mouse sets position of tail
 
 🐞 new objects need to be initialized in setup
 
@@ -26,27 +25,37 @@ function preload() {
     font = loadFont('fonts/Meiryo-01.ttf')
 }
 
-let anchor, bob, gravity, spring
+let bobs = []
+let gravity
+let springs = []
+let SPACING
 
 function setup() {
     createCanvas(640, 360)
     colorMode(HSB, 360, 100, 100, 100)
     stroke(0, 0, 100)
     strokeWeight(5)
-    anchor = new Particle(300, height/2, true)
-    bob = new Particle(500, height/2+10, false)
+    SPACING = 20
+    for (let i = 0; i < 20; i++) {
+        let bob = new Particle(SPACING/2*i + width/2, SPACING*i, i===0)
+        bobs.push(bob)
+        if (i > 0) {
+            let spring = new Spring(bobs[i-1], bob, 0.06, SPACING-10, 0.99)
+            springs.push(spring)
+        }
+    }
     gravity = new p5.Vector(0, 0.01)
-    spring = new Spring(anchor, bob, 0.01, 120, 0.99)
 }
 
 function draw() {
     background(234, 34, 24)
-    anchor.show()
-    bob.show()
-    anchor.applyForce(gravity)
-    bob.applyForce(gravity)
-    anchor.update()
-    bob.update()
-    spring.show()
-    spring.update()
+    for (let bob of bobs) {
+        bob.show()
+        bob.update()
+        bob.applyForce(gravity)
+    }
+    for (let spring of springs) {
+        spring.show()
+        spring.update()
+    }
 }
