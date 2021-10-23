@@ -12,9 +12,10 @@ class Particle {
     }
 
     update() {
-        this.vel.add(this.acc)
-        this.pos.add(this.vel)
-        this.acc.setMag(0)
+        this.vel.add(this.acc) // δ/δx(acceleration) = velocity
+        this.pos.add(this.vel) // δ/δx(velocity) = position
+        this.acc.setMag(0) // and of course, every frame, we reset our
+        // acceleration
     }
 
     applyForce(f) {
