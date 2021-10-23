@@ -40,7 +40,7 @@ function setup() {
         let bob = new Particle(SPACING/2*i + width/2, SPACING*i, i===0)
         bobs.push(bob)
         if (i > 0) {
-            let spring = new Spring(bobs[i-1], bob, 0.06, SPACING-10, 0.99)
+            let spring = new Spring(bobs[i-1], bob, 0.06, SPACING, 0.99)
             springs.push(spring)
         }
     }
@@ -50,12 +50,31 @@ function setup() {
 function draw() {
     background(234, 34, 24)
     for (let bob of bobs) {
-        bob.show()
+        // bob.show()
         bob.update()
         bob.applyForce(gravity)
     }
+
+    // let's begin a curved vertex!
+    noFill()
+    beginShape()
+    let tail = bobs[0]
+    curveVertex(tail.pos.x, tail.pos.y)
+
     for (let spring of springs) {
-        spring.show()
+        // spring.show()
+        curveVertex(spring.a.pos.x, spring.a.pos.y)
         spring.update()
     }
+    let head = bobs[bobs.length - 1]
+    curveVertex(head.pos.x, head.pos.y)
+    curveVertex(head.pos.x, head.pos.y)
+    endShape()
+
+    if (mouseIsPressed) {
+        // we want to set our head's position to the location of our mouse
+        // if our mouse is pressed
+        head.pos = new p5.Vector(mouseX, mouseY)
+    }
+
 }
