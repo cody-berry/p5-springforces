@@ -16,4 +16,8 @@ class Particle {
         this.pos.add(this.vel)
         this.acc.setMag(0)
     }
+
+    applyForce(f) {
+        this.acc.add(f) // F = ma, so a = F/m, but m = 1, so a = F
+    }
 }

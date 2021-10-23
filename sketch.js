@@ -27,17 +27,22 @@ function preload() {
     font = loadFont('fonts/Meiryo-01.ttf')
 }
 
-let anchor, bob
+let anchor, bob, gravity
 
 function setup() {
     createCanvas(640, 360)
     colorMode(HSB, 360, 100, 100, 100)
     anchor = new Particle(300, 0)
     bob = new Particle(300, 100)
+    gravity = new p5.Vector(0, 0.01)
 }
 
 function draw() {
     background(234, 34, 24)
     anchor.show()
     bob.show()
+    anchor.applyForce(gravity)
+    bob.applyForce(gravity)
+    anchor.update()
+    bob.update()
 }
