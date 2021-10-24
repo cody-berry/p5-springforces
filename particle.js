@@ -25,4 +25,21 @@ class Particle {
     applyForce(f) {
         this.acc.add(f) // F = ma, so a = F/m, but m = 1, so a = F
     }
+
+    edges() {
+        if ((this.pos.x + this.r) >= width) {
+            this.vel.x *= -1
+        }
+        if (this.pos.x - this.r <= 0) {
+            this.vel.x *= -1
+        }
+
+        if (this.pos.y - this.r <= 0) {
+            this.vel.y *= -1
+        }
+
+        if (this.pos.y + this.r >= height) {
+            this.vel.y *= -1
+        }
+    }
 }

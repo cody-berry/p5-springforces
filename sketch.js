@@ -9,12 +9,13 @@ let's simulate a the oscillating motion of a spring using vectors and forces!
 
 coding plan:
 .   particle class ➜ constructor, show, update, apply_force
-0		pos, vel, acc
+ 		pos, vel, acc
 .	spring class ➜ constructor, update, show
-0		a, b, k, rest_length
+ 		a, b, k, rest_length
 .	multiple spring and particle arrays
-*	use curvedVertex, noFill
-*	mouse sets position of tail
+.	use curvedVertex, noFill
+.	mouse sets position of tail
+]   experiments
 
 🐞 new objects need to be initialized in setup
 
@@ -30,13 +31,23 @@ let gravity
 let springs = []
 let SPACING
 
+
 function setup() {
+    deprecated_setup()
+}
+
+function draw() {
+    deprecated_draw()
+}
+
+function deprecated_setup() {
     createCanvas(640, 360)
     colorMode(HSB, 360, 100, 100, 100)
     stroke(0, 0, 100)
     strokeWeight(5)
     SPACING = 20
-    for (let i = 0; i < 20; i++) {
+
+    for (let i = 0; i < 10; i++) {
         let bob = new Particle(SPACING/2*i + width/2, SPACING*i, i===0)
         bobs.push(bob)
         if (i > 0) {
@@ -44,15 +55,16 @@ function setup() {
             springs.push(spring)
         }
     }
-    gravity = new p5.Vector(0, 0.01)
+    gravity = new p5.Vector(0, 0.1)
 }
 
-function draw() {
+function deprecated_draw() {
     background(234, 34, 24)
     for (let bob of bobs) {
         // bob.show()
         bob.update()
         bob.applyForce(gravity)
+        bob.edges()
     }
 
     // let's begin a curved vertex!
@@ -63,11 +75,10 @@ function draw() {
 
     for (let spring of springs) {
         // spring.show()
-        curveVertex(spring.a.pos.x, spring.a.pos.y)
         spring.update()
+        curveVertex(spring.a.pos.x, spring.a.pos.y)
     }
     let head = bobs[bobs.length - 1]
-    curveVertex(head.pos.x, head.pos.y)
     curveVertex(head.pos.x, head.pos.y)
     endShape()
 
