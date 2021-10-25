@@ -29,17 +29,21 @@ class Particle {
     edges() {
         if ((this.pos.x + this.r) >= width) {
             this.vel.x *= -1
+            this.pos.x = width - this.r
         }
         if (this.pos.x - this.r <= 0) {
             this.vel.x *= -1
+            this.pos.x = this.r
         }
 
         if (this.pos.y - this.r <= 0) {
             this.vel.y *= -1
+            this.pos.y = this.r
         }
 
         if (this.pos.y + this.r >= height) {
             this.vel.y *= -1
+            this.pos.y = height - this.r
         }
     }
 }

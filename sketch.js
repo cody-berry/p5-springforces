@@ -15,7 +15,7 @@ coding plan:
 .	multiple spring and particle arrays
 .	use curvedVertex, noFill
 .	mouse sets position of tail
-]   experiments
+}   experiments
 
 🐞 new objects need to be initialized in setup
 
@@ -30,17 +30,62 @@ let bobs = []
 let gravity
 let springs = []
 let SPACING
+let CIRCLE_RADIUS // this is just a silly variable; I don't know how to
+// explain it. You'll see why I have it later.
+let angle = 0 // this is the angle for where we place our points.
+const VERTICES = 3 // this is the number of vertices we'll be creating.
+
 
 
 function setup() {
-    deprecated_setup()
+    createCanvas(640, 360)
+    colorMode(HSB, 360, 100, 100, 100)
+    CIRCLE_RADIUS = 60
+
+    const DELTA_ANGLE = 2*PI/VERTICES // we need to split up the circle into
+    // `vertices` sections. // this is our change in angle.
+
+    // Preparation: For our springs, we need a restLength, but that requires
+    // knowing the distance between each vertex.
+    let x = CIRCLE_RADIUS*cos(DELTA_ANGLE) - CIRCLE_RADIUS*1 // cos(0) = 1
+    let y = CIRCLE_RADIUS*sin(DELTA_ANGLE) - CIRCLE_RADIUS*0 // sin(0) = 0
+    let distance = sqrt(x*x + y*y) // and we've got the Pythagorean Theorem!
+    // let's generate our bobs!
+    for (let i = 0; i < VERTICES; i++) {
+        x = CIRCLE_RADIUS*cos(angle)
+        y = CIRCLE_RADIUS*sin(angle)
+        let bob = new Particle(x+width/2, y+height/2, false)
+        bobs.push(bob)
+        if (i > 0) {
+            let spring = new Spring(bobs[i-1], bob, 0.01, distance, 0.99)
+            springs.push(spring)
+        }
+        angle += DELTA_ANGLE
+    }
+    // we need to add a spring to connect the last to the first.
+    let spring = new Spring(bobs[0], bobs[bobs.length-1], 0.01, distance, 0.99)
+    springs.push(spring)
+
+    gravity = new p5.Vector(0, 0.1)
+
+    frameRate(60)
 }
 
 function draw() {
-    deprecated_draw()
+    background(234, 34, 24)
+    for (let b of bobs) {
+        b.edges()
+        b.update()
+        b.applyForce(gravity)
+        b.show()
+    }
+    for (let s of springs) {
+        s.update()
+        s.show()
+    }
 }
 
-function deprecated_setup() {
+function string_setup() {
     createCanvas(640, 360)
     colorMode(HSB, 360, 100, 100, 100)
     stroke(0, 0, 100)
@@ -58,7 +103,7 @@ function deprecated_setup() {
     gravity = new p5.Vector(0, 0.1)
 }
 
-function deprecated_draw() {
+function string_draw() {
     background(234, 34, 24)
     for (let bob of bobs) {
         // bob.show()
